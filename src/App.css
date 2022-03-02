@@ -15,6 +15,19 @@ main {
   align-items: center;
 }
 
+.title {
+  font-size: 40px;
+  margin: 0;
+}
+
+.instructions {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  margin: 0;
+  padding: 0 10px 0 10px;
+  text-align: center;
+}
+
 .dice-container {
   display: grid;
   grid-template: auto auto / repeat(5, 1fr);
@@ -43,8 +56,8 @@ main {
   color: white;
   font-size: 1.2rem;
   font-family: "Karla", sans-serif;
-  width: 100px;
-  height: 40px;
+  width: 120px;
+  height: 60px;
   border-radius: 4px;
   box-shadow: 0px 3.2px 7.68px rgba(0, 0, 0, 0.18);
   cursor: pointer;
