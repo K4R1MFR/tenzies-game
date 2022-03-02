@@ -20,7 +20,11 @@ export default function App() {
     <main>
       <section className="dice-container" >
         {diceElements}
+        {console.log("rendered")}
       </section>
+      <button
+        className='btn-roll'
+        onClick={() => setDice(allNewDice())} >Roll</button>
     </main>
   );
 }

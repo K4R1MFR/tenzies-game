@@ -37,3 +37,14 @@ main {
 .die-number {
   font-size: 2rem;
 }
+
+.btn-roll {
+  background-color: #5035ff;
+  color: white;
+  font-size: 1.2rem;
+  font-family: "Karla", sans-serif;
+  width: 100px;
+  height: 40px;
+  border-radius: 4px;
+  box-shadow: 0px 3.2px 7.68px rgba(0, 0, 0, 0.18);
+}
