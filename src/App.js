@@ -2,21 +2,35 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Die from './components/Die';
 import { nanoid } from 'nanoid';
+import { useStopwatch } from 'react-timer-hook';
 import Confetti from 'react-confetti';
 
 export default function App() {
-  const [dice, setDice] = useState(allNewDice())
-  const [tenzies, setTenzies] = useState(false)
+  const [dice, setDice] = useState(allNewDice());
+  const [tenzies, setTenzies] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  const {
+    seconds,
+    minutes,
+    pause,
+    reset
+  } = useStopwatch({ autoStart: false });
+
 
   useEffect(() => {
     const allDiceHeld = dice.every(die => die.isHeld)
     const allSameVale = dice.every(die => die.value === dice[0].value)
     if (allDiceHeld && allSameVale) {
-      setTenzies(true)
-      console.log("You won!!!")
+      setTenzies(true);
+      pause();
     }
+
+    if (!gameStarted && dice.some(die => die.isHeld)) {
+      reset();
+      setGameStarted(true);
+    }
+
   }, [dice])
-  //!tenzies && console.log("Dice state changed")
 
 
   function generateNewDie() {
@@ -40,6 +54,7 @@ export default function App() {
         { ...die, isHeld: !die.isHeld } :
         die
     }))
+
   }
 
   const diceElements = dice.map(die => <Die
@@ -47,6 +62,7 @@ export default function App() {
     value={die.value}
     isHeld={die.isHeld}
     holdDice={() => holdDice(die.id)} />)
+
 
   function rollDice() {
     setDice(prevDice => prevDice.map(die => {
@@ -59,24 +75,38 @@ export default function App() {
 
   const { innerWidth, innerHeight } = window;
 
-  function reset() {
-    setDice(allNewDice)
-    setTenzies(false)
+  function resetAll() {
+    setDice(allNewDice);
+    setTenzies(false);
+    setGameStarted(false);
+    reset();
+    pause();
   }
 
   return (
     <main>
       {tenzies && <Confetti width={innerWidth} height={innerHeight} />}
       <h1 className="title">Tenzies</h1>
-      <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+      <p className="instructions">
+        Roll until all dice are the same.
+        Click each die to freeze it at its current value between rolls.
+      </p>
 
       <div className="dice-container" >
         {diceElements}
       </div>
       <button
         className='btn-roll'
-        onClick={tenzies ? reset : rollDice}
+        onClick={tenzies ? resetAll : rollDice}
       >{tenzies ? "New Game" : "Roll"}</button>
+
+      <div className='stopwatch'>
+        {tenzies ?
+          <div>You won with a time of:</div> :
+          ''}
+        <span>{minutes}min</span>:<span>{seconds}sec</span>
+      </div>
+
     </main>
   );
 }
