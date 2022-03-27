@@ -9,6 +9,7 @@ export default function App() {
   const [dice, setDice] = useState(allNewDice());
   const [tenzies, setTenzies] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [rollNumber, setRollNumber] = useState(0);
   const {
     seconds,
     minutes,
@@ -71,6 +72,10 @@ export default function App() {
         generateNewDie()
 
     }))
+
+    if (gameStarted) {
+      setRollNumber(prevState => prevState + 1)
+    }
   }
 
   const { innerWidth, innerHeight } = window;
@@ -79,6 +84,7 @@ export default function App() {
     setDice(allNewDice);
     setTenzies(false);
     setGameStarted(false);
+    setRollNumber(0);
     reset();
     pause();
   }
@@ -101,10 +107,8 @@ export default function App() {
       >{tenzies ? "New Game" : "Roll"}</button>
 
       <div className='stopwatch'>
-        {tenzies ?
-          <div>You won with a time of:</div> :
-          ''}
-        <span>{minutes}min</span>:<span>{seconds}sec</span>
+        <span>{minutes}min:{seconds}sec</span>
+        {tenzies && <p>You won with {rollNumber} dice rolls.</p>}
       </div>
 
     </main>
